@@ -1,17 +1,18 @@
 import { useContext, useRef } from "react";
+import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../Context/AuthContext";
 import { showToast } from "../../Assets/toasts";
 import { mycontext } from "../../App";
 
 export default function Login() {
-  const {baseURL}=useContext(mycontext)
+  const { baseURL } = useContext(mycontext)
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const navigator = useNavigate();
-  const { setIsLoggedIn = () => {} } = useAuthContext();
+  const { setIsLoggedIn = () => { } } = useAuthContext();
 
-  const goToSignup = ()=>{
+  const goToSignup = () => {
     navigator('/signup')
   }
 
@@ -21,30 +22,21 @@ export default function Login() {
     const password = passwordRef.current.value;
 
     if (email.length > 0 && password.length > 0) {
-      fetch(`${baseURL}/api/auth/signin`, {
-        method: "POST",
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+      axios.post(`${baseURL}/api/auth/signin`, { email, password }, {
         headers: {
           "Content-Type": "application/json",
-          
         },
       })
         .then((response) => {
-          return response.json();
-        })
-        .then((result) => {
-          if (result.success && result.token) {
-            sessionStorage.setItem("token", result.token);
-            sessionStorage.setItem("userId", result.userId);
+          if (response.data?.success && response.data?.token) {
+            sessionStorage.setItem("token", response.data?.token);
+            sessionStorage.setItem("userId", response.data?.userId);
             setIsLoggedIn(true);
             navigator("/dashboard/products");
           } else {
-            showToast(result.message, "error");
+            showToast(response.data.message, "error");
           }
-          console.log(result);
+          console.log(response.data);
         })
         .catch((error) => {
           showToast(error, "error");
@@ -59,8 +51,8 @@ export default function Login() {
       className="container-fluid"
       style={{
         height: "100vh",
-        backgroundImage:'url("https://www.shutterstock.com/image-photo/hand-mechanic-holding-car-service-600nw-2340377479.jpg")',
-        backgroundSize:"cover",
+        backgroundImage: 'url("https://www.shutterstock.com/image-photo/hand-mechanic-holding-car-service-600nw-2340377479.jpg")',
+        backgroundSize: "cover",
         width: "100vw"
       }}
     >
@@ -80,7 +72,7 @@ export default function Login() {
             className="col-6"
             style={{
               backgroundRepeat: "no-repeat",
-              backgroundPosition:"center",
+              backgroundPosition: "center",
             }}
           ></div>
           <div className="col-6 d-flex align-items-center justify-content-center">
@@ -119,8 +111,8 @@ export default function Login() {
                 >
                   Sign In
                 </button>
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <a
                   className="btn btn-default"
                   type="button"
@@ -135,4 +127,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-  )}
+  )
+}

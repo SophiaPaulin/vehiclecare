@@ -1,4 +1,5 @@
 import { useContext, useRef } from "react";
+import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../Context/AuthContext";
 import { showToast } from "../../Assets/toasts";
@@ -35,23 +36,20 @@ export default function SignUp() {
     //   return;
     // }
 
-    fetch(`${baseURL}/api/auth/register`, {
-      method: "POST",
-      body: JSON.stringify({ email, password, name }),
+    axios.post(`${baseURL}/api/auth/register`,{ email, password, name },{
       headers: {
         "Content-Type": "application/json",
       },
     })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) {
-          sessionStorage.setItem("userId", result.userId);
+      .then((response) => {
+        if (response.data?.success) {
+          sessionStorage.setItem("userId", response.data?.userId);
           showToast("Register Success", "success");
           navigate("/login");
         } else {
-          showToast(result.message, "error");
+          showToast(response.data?.message, "error");
         }
-        console.log(result);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error during signup:", error);
