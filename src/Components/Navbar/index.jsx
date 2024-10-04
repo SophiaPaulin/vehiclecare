@@ -11,11 +11,12 @@ export default function Navbar() {
       sessionStorage.clear()
       navigation('/login')
     }
+    navigation('/login')
   }
 
   return (
     <nav className="navbar bg-primary topbar mb-4 static-top shadow justify-content-end">
-      <button className="btn btn-default text-white" onClick={() => logout()}>Logout</button>
+      <button className="btn btn-default text-white" onClick={logout}>Logout</button>
     </nav>
   );
 }

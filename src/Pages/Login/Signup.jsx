@@ -14,7 +14,7 @@ export default function SignUp() {
   const { setIsLoggedIn } = useAuthContext();
 
   const goToSignIn = () => {
-    navigate('/');
+    navigate('/login');
   };
 
   function handleSignup(e) {
