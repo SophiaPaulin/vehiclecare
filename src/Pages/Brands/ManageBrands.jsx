@@ -45,8 +45,9 @@ export default function ManageBrands() {
         </tr>
     </thead>
     <tbody>
-        {brands && brands.length > 0 ? brands.map((brand) => (
+        {brands && brands.length > 0 ? brands.map((brand,index) => (
                     <tr> 
+                        <td>{index+1}</td>
                         <td>{brand.name}</td>
                         <td>{brand.email}</td>
                         <td>{brand.phoneNumber}</td> 
