@@ -36,7 +36,7 @@ export default function SignUp() {
     //   return;
     // }
 
-    axios.post(`${baseURL}/api/auth/creat`,{ email, password, name },{
+    axios.post(`${baseURL}/api/auth/create`,{ email, password, name },{
       headers: {
         "Content-Type": "application/json",
       },
